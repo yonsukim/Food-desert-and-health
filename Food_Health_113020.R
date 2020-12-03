@@ -30,6 +30,18 @@ df2 <- read_excel("C:\\Users\\Dongwoo\\Documents\\R\\Data\\LA_2.xlsx", sheet="Sh
 
 df10$tract0  <- substr(df1$blkidfp10, 2, 11)
 
+
+# View(df10)
+
+vars <- c("bn44511", "bn44512", "bn44522") 
+  
+
+df11 <- df10 %>%
+  dplyr::group_by(tract0) %>%
+  summarise(cnt=sum(bn44511)) 
+  
+View(df11)
+
 df20 <- df2 %>%
   mutate(tract0=as.character(Geo_FIPS))
 
@@ -43,7 +55,7 @@ comb <- df20 %>%
 
 # 12/2/2020
 
-
+ 
  
 head(df22)
 
