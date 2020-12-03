@@ -44,7 +44,7 @@ comb <- df20 %>%
 # 12/2/2020
 
 
-
+ 
 head(df22)
 
 frame <- copy_to(sc, df2, overwrite = TRUE)
