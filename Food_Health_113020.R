@@ -1,11 +1,10 @@
 
 #####  Food and Health 
-#####  YKim - 11/30/20
+#####  YKim Created - 11/30/20
 
 install.packages("readstata13")
 install.packages("rlang", dependencies = TRUE)
 install.packages("readxl")
-
 install.packages("tidyverse")
 
 library(readstata13)
@@ -16,97 +15,101 @@ library(dplyr)
 # See below if excel not loaded 
 # https://stackoverflow.com/questions/53542831/how-to-install-specific-version-of-rlang-package-in-r
 
-df1 <- read.dta13("C:\\Users\\Dongwoo\\Documents\\R\\Data\\socal_blocks_someemps_2010b_2010.dta")
-# View(df1)
 
 
-df2 <- read_excel("C:\\Users\\Dongwoo\\Documents\\R\\Data\\LA_2.xlsx", sheet="Sheet1")
-# View(df2)
+#### DATASET1: Block data(JW) imported
+df10 <- read.dta13("C:\\Users\\Dongwoo\\Documents\\R\\Data\\socal_blocks_someemps_2010b_2010.dta")
+# View(df10)
+
+#### Creating tract col. by substring
+df10$tract0  <- substr(df10$blkidfp10, 2, 11)
+
+
+
+
+
+#### DATASET2: Built-environment data imported
+df20 <- read_excel("C:\\Users\\Dongwoo\\Documents\\R\\Data\\LA_2.xlsx", sheet="Sheet1")
+# View(df20)
+
+df20 <- df2 %>%
+  mutate(tract0=as.character(Geo_FIPS))
+
+# View(df20)
+
+
+
+
+
+
+#### DATASET3: Childhood Obesity in LA
+df30 <- read_excel("C:\\Users\\Dongwoo\\Documents\\R\\Data\\Childhood_Obesity_LA.xlsx", sheet="Childhood_Obesity_LA_")
+
+## keep Year, Percent, Count, Track Number, Neighborhood, GEOID, Denominator
+#### Creating tract col. by substring
+df30$tract0  <- substr(df30$GEOID, 11, 20)
+# View(df30)
+
+df31_17 <- df30 %>%
+  dplyr::select(Year, Percent, Count, Tract,  tract0, Neighborhood, GEOID, Denominator) %>%
+  dplyr::filter(Year =='2017')
+# View(df31_17)
 
 
 # remove.packages(rlang)
 # sessionInfo()
 
 
-df10$tract0  <- substr(df1$blkidfp10, 2, 11)
+# vars <- c("bn44511", "bn44512", "bn44522")
+# as.numeric(vars)
 
 
-# View(df10)
 
-vars <- c("bn44511", "bn44512", "bn44522") 
-  
+#### Sum of values - group by tract
 
 df11 <- df10 %>%
   dplyr::group_by(tract0) %>%
-  summarise(cnt=sum(bn44511)) 
+  summarise(cnt1=sum(bn44511), cnt2=sum(bn44512)) %>%
+  mutate(sum1=cnt1+cnt2)
   
-df11 <- df10 %>%
-  dplyr::group_by(tract0) %>%
-  summarise(cnt=sum(vars)) 
+# View(df11)
 
 
-View(df11)
 
-df20 <- df2 %>%
-  mutate(tract0=as.character(Geo_FIPS))
 
-# View(df10)
-# View(df20)
 
-comb <- df20 %>%
-  dplyr::left_join(df10, by="tract0")
+#### Three tables merged
+comb0 <- df20 %>%
+  dplyr::left_join(df11, by="tract0") %>%
+  dplyr::left_join(df31_17, by='tract0')
 
-# View(comb) - Two tables merged
+# View(comb0)
 
-# 12/2/2020
+# 12/172020
 
  
- 
-head(df22)
-
-frame <- copy_to(sc, df2, overwrite = TRUE)
-
-View(df1)
-
-df3 <- merge(df2, data df1, by=”ID”)
 
 
 
 
 
 
-c
-install.packages("xlsx")
-library("xlsx")
 
-install.packages("writexl")
-library("writexl")
-
-
-C:\Users\Dongwoo\Dropbox\YK_JW\Data
-
-install.packages("readxl")
-install.packages("scales")
-install.packages("rlang")
+# install.packages("readxl")
+# install.packages("scales")
+# install.packages("rlang")
 # install.packages("tidyverse")
 # install.packages("readr")
+# install.packages("readstata13")
+# library(readstata13)
+# library(foreign)
+# library(rlang)
 
 
 
-
-install.packages("readstata13")
-library(readstata13)
-library(foreign)
-library(rlang)
+# install.packages("foreign")
+# install.packages("haven")
+# install.packages("readxl")
 
 
-
-install.packages("foreign")
-install.packages("haven")
-
-install.packages("readxl")
-
-
-
-View(data)
 
