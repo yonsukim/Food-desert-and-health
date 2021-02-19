@@ -93,10 +93,58 @@ comb0 <- df20 %>%
 
 
 
+## Social Blocks 2001-2010
+
+
+
+#### DATASET2: Social Block data(2000-2010) multiple files imported 2/19/21
+
+
+list.name <- c(2000:2010)
+
+for(i in c(list.name)){
+  obj_name <- paste('socal_blocks_someemps_2010b', i, sep='_')
+  file_name <- file.path('C:/Users/Dongwoo/Documents/Research/Data Warehouse/Built_Environment',paste(obj_name,'dta', sep ='.'))
+  input <- read.dta13(file_name)
+  assign(obj_name, value = input)
+}
+
+
+# View(socal_blocks_someemps_2010b_2003)
+
+# Next step: Add year indicator and rbind
+df_all <- rbind(socal_blocks_someemps_2010b_2000,socal_blocks_someemps_2010b_2001)
+View(df_all)
+
+
+
+## https://stackoverflow.com/questions/50019236/rbind-in-a-loop-in-r
+
+for (i in 2000:2010) {
+  for (j in 2000:i) {
+    if(i==j) { next }
+    df_first = paste0('socal_blocks_someemps_2010b_', i)
+    df_second = paste0('socal_blocks_someemps_2010b_', j)
+    expr_rbind = paste0("rbind(",df_first,",",df_second,")")
+    expr_store_as = paste0(df_first,df_second)
+    expr_final = paste0(expr_store_as," = ",expr_rbind)
+    eval(parse(text=expr_final))
+  }
+}
+
+expr_final
+
+View(expr_rbind)
 
 
 
 
+
+
+
+
+  
+  
 # install.packages("readxl")
 # install.packages("scales")
 # install.packages("rlang")
